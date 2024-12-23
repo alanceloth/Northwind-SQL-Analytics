@@ -233,3 +233,70 @@ Configure um novo servidor no PgAdmin:
     ```
     docker-compose down -v
     ```
+--- 
+## Para usar o dbt neste repositório
+
+Com o repositório clonado, execute os passos abaixo.
+
+ Na pasta raiz, em uma janela do terminal, suba o docker compose
+`docker compose up -d`
+
+- Criar o projeto poetry
+`poetry init`
+next next next
+
+- Criar o venv com poetry
+`poetry env use 3.11.5` (ou a versão do python que preferir)
+
+- Abrir um shell do poetry com o env ativado
+`poetry shell`
+
+- Adicionar o dbt-postgres como dependencia ao projeto
+`poetry add dbt-postgres`
+
+- Iniciar o projeto dbt
+`dbt init`
+
+- Escolha um nome para o projeto
+`northwind`
+
+- Setup do profile (preencha conforme abaixo)
+```bash
+
+Which database would you like to use?
+[1] postgres
+
+Enter a number: `1`
+host (hostname for the instance): `db`
+port [5432]: `55432`
+user (dev username): postgres
+pass (dev password): postgres
+dbname (default database that dbt will build objects in): `northwind`
+schema (default schema that dbt will build objects in): `public`
+threads (1 or more) [1]: `1`
+
+```
+
+- Entre na pasta do projeto
+`cd northwind`
+
+- Teste a conexão
+`dbt debug`
+
+O profile.yml deve ter a seguinte estrutura:
+
+```yaml
+northwind:
+  outputs:
+    dev:
+      dbname: northwind
+      host: localhost
+      pass: postgres
+      port: 55432
+      schema: public
+      threads: 1
+      type: postgres
+      user: postgres
+  target: dev
+```
+
